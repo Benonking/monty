@@ -33,3 +33,9 @@ typedef struct instruction_s
 	void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
 
+
+stack_t *add_dnodeint_end(dlistint_t **head, const int n);
+void free_dlistint(stack_t *head);
+stack_t *add_dnodeint(dlistint_t **head, const int n);
+stack_t *insert_node(stack_t *tmp, int n);
+stack_t *insert_dnodeint_at_index(stack_t **h, unsigned int idx, int n);
