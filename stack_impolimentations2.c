@@ -1,21 +1,25 @@
 #include "monty.h"
+
 /**
  * _nop - literally does nothing
  * @stack: pointer to the top of the stack
  * @line_number: the index of the current line
  *
  */
+
 void _nop(__attribute__ ((unused))stack_t **stack,
 	  __attribute__ ((unused))unsigned int line_number)
 {
 	;
 }
+
 /**
  * _pchar - prints the ASCII value of a number
  * @stack: pointer to the top of the stack
  * @line_number: the index of the current line
  *
  */
+
 void _pchar(stack_t **stack, unsigned int line_number)
 {
 	stack_t *runner;
@@ -39,11 +43,13 @@ void _pchar(stack_t **stack, unsigned int line_number)
 	putchar(val);
 	putchar('\n');
 }
+
 /**
  * _pstr - print string starting a top of stack
  * @stack: linked list for stack
  * @line_number: line number opcode occurs on
  */
+
 void _pstr(stack_t **stack, __attribute__ ((unused))unsigned int line_number)
 {
 	stack_t *runner;
@@ -65,21 +71,25 @@ void _pstr(stack_t **stack, __attribute__ ((unused))unsigned int line_number)
 	}
 	putchar('\n');
 }
+
 /**
  * _stack - sets sq_flag to stack
  * @stack: pointer to stack list
  * @line_number: line opcode occurs on
  */
+
 void _stack(__attribute__ ((unused)) stack_t **stack,
 	    __attribute__ ((unused)) unsigned int line_number)
 {
 	sq_flag = 0;
 }
+
 /**
- * _queue - sets sq_flag to queue
+ * _queue - set sq_flag to queue
  * @stack: pointer to stack list
  * @line_number: line opcode occurs on
  */
+
 void _queue(__attribute__ ((unused))stack_t **stack,
 	    __attribute__ ((unused))unsigned int line_number)
 {

@@ -31,12 +31,12 @@ void _push(stack_t **stack, unsigned int line_number)
 
 	if (sq_flag == 1)
 	{
-		add_dnodeint_end(stack, push_arg);
+		add_stacknode_end(stack, push_arg);
 	}
 
 	if (sq_flag == 0)
 	{
-		add_dnodeint(stack, push_arg);
+		add_stacknode_beg(stack, push_arg);
 	}
 
 }
@@ -57,7 +57,7 @@ void _pall(stack_t **stack, __attribute__ ((unused))unsigned int line_number)
 	}
 }
 /**
- * _pint - print int a top of stack
+ * _pint - print int at top of stack
  * @stack: pointer to linked list stack
  * @line_number: number of line opcode occurs on
  *
@@ -107,5 +107,5 @@ void _pop(stack_t **stack, unsigned int line_number)
 		printf("L%d: can't pop an empty stack\n", line_number);
 		error_exit(stack);
 	}
-	delete_dnodeint_at_index(stack, 0);
+	delete_stacknode_at_index(stack, 0);
 }

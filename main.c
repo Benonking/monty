@@ -11,13 +11,15 @@
 int main(int argc, char **argv)
 {
 	stack_t *stack;
+
 	stack = NULL;
-	if (ac != 2)
+
+	if (argc != 2)
 	{
 		printf("USAGE: monty file\n");
 		error_exit(&stack);
 	}
-	read_file(argc[1], &stack);
-	free_dlistint(stack);
+	read_file(argv[1], &stack);
+	free_stack(stack);
 	return (0);
 }
