@@ -5,9 +5,12 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <ctype.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 #include <string.h>
 
-extern int sq_flag;
+
 /**
  * struct stack_s - doubly linked list reperesentation of a stack (or Queue
  * @n: integer
@@ -39,18 +42,16 @@ typedef struct instruction_s
 	char *opcode;
 	void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
-/**/
 
-typedef void (*instruct_func)(stack_t **stack, unsigned int line_number);
-char *parse_line(char *line);
-instruct_func get_op_func(char *str);
+
+void (*get_op_func(char *token1))(stack_t **stack, unsigned int line_number);
 void read_file(char *filename, stack_t **stack);
 void _pall(stack_t **stack, unsigned int line_number);
 void _swap(stack_t **stack, unsigned int line_number);
 void _nop(stack_t **stack, unsigned int line_number);
 void _pchar(stack_t **stack, unsigned int line_number);
 void _pint(stack_t **stack, unsigned int line_number);
-void _push(stack_t **stack, unsigned int line_number);
+void _push(stack_t **h, unsigned int line_number, const char *n);
 void _pop(stack_t **stack, unsigned int line_number);
 void _add(stack_t **stack, unsigned int line_number);
 void _sub(stack_t **stack, unsigned int line_number);
@@ -63,10 +64,8 @@ void _rotr(stack_t **stack, unsigned int line_number);
 void _queue(stack_t **stack, unsigned int line_number);
 
 void _stack(stack_t **stack, unsigned int line_number);
-stack_t *add_stacknode_end(stack_t **head, const int n);
-stack_t *add_stacknode_beg(stack_t **head, const int n);
-void free_stack(stack_t *head);
-int delete_stacknode_at_index(stack_t **head, unsigned int index);
-void error_exit(stack_t **stack);
-int isnumber(char *str);
+int add_stacknode_beg(stack_t **head, int n);
+void free_stack(stack_t **head);
+void delete_end_node(stack_t **h);
+int isnumber(const char *n);
 #endif

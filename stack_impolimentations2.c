@@ -1,97 +1,91 @@
 #include "monty.h"
-
 /**
- * _nop - literally does nothing
- * @stack: pointer to the top of the stack
- * @line_number: the index of the current line
- *
+ * _pall - print all nodes in stack
+ * @h: head of list
+ * @line_number: bytecode line number
  */
-
-void _nop(__attribute__ ((unused))stack_t **stack,
-	  __attribute__ ((unused))unsigned int line_number)
+void _pall(stack_t **h, unsigned int line_number)
 {
-	;
-}
+	stack_t *tmp = NULL;
 
-/**
- * _pchar - prints the ASCII value of a number
- * @stack: pointer to the top of the stack
- * @line_number: the index of the current line
- *
- */
+	if (!h || !*h)
+		return;
 
-void _pchar(stack_t **stack, unsigned int line_number)
-{
-	stack_t *runner;
-	int val;
-
-	if (*stack == NULL)
+	(void) line_number;
+	tmp = *h;
+	while (tmp != NULL)
 	{
-		printf("L%d: can't pchar, stack empty\n", line_number);
-		error_exit(stack);
+		printf("%d\n", tmp->n);
+		tmp = tmp->next;
+	}
+}
+/**
+ * _pint - print top node in stack
+ * @h: head of list
+ * @line_number: bytecode line number
+ */
+void _pint(stack_t **h, unsigned int line_number)
+{
+	if (!h || !*h)
+	{
+		printf("L%u: can't pint, stack empty\n", line_number);
+		exit(EXIT_FAILURE);
+	}
+	printf("%d\n", (*h)->n);
+
+}
+/**
+ * _pchar - print top node in stack as ascii letter
+ * @h: head of list
+ * @line_number: bytecode line number
+ */
+void _pchar(stack_t **h, unsigned int line_number)
+{
+	if (!h || !*h)
+	{
+		printf("L%u: can't pchar, stack empty\n", line_number);
+		exit(EXIT_FAILURE);
+	}
+	if (((*h)->n) >= 0 && ((*h)->n) <= 127)
+		printf("%c\n", (*h)->n);
+	else
+	{
+		printf("L%u: can't pchar, value out of range\n", line_number);
+		exit(EXIT_FAILURE);
 	}
 
-	runner = *stack;
-	val = runner->n;
+}
+/**
+ *_pstr - print top nodes in stack as ascii letter
+ * and stop only if end of stack, node is 0, or not in ascii table
+ * @h: head of list
+ * @line_number: bytecode line number
+ */
+void _pstr(stack_t **h, unsigned int line_number)
+{
+	stack_t *tmp;
 
-	if (!isprint(val))
+	if (!h || !*h)
 	{
-		printf("L%d: can't pchar, value out of range\n", line_number);
-		error_exit(stack);
+		printf("L%u: can't pchar, stack empty\n", line_number);
+		exit(EXIT_FAILURE);
 	}
-
-	putchar(val);
-	putchar('\n');
-}
-
-/**
- * _pstr - print string starting a top of stack
- * @stack: linked list for stack
- * @line_number: line number opcode occurs on
- */
-
-void _pstr(stack_t **stack, __attribute__ ((unused))unsigned int line_number)
-{
-	stack_t *runner;
-	int val;
-
-	runner = *stack;
-
-	while (runner != NULL)
+	tmp = *h;
+	while ((tmp != NULL) && (tmp->n != 0) &&
+	       (tmp->n >= 0) && (tmp->n <= 127))
 	{
-		val = runner->n;
-		if (val == 0)
-			break;
-		if (!isprint(val))
-		{
-			break;
-		}
-		putchar(val);
-		runner = runner->next;
+		printf("%c", (tmp)->n);
+		tmp = tmp->next;
 	}
-	putchar('\n');
+	printf("\n");
 }
-
 /**
- * _stack - sets sq_flag to stack
- * @stack: pointer to stack list
- * @line_number: line opcode occurs on
+ * _nop - do nothing
+ * @h: head of list
+ * @line_number: bytecode line number
  */
-
-void _stack(__attribute__ ((unused)) stack_t **stack,
-	    __attribute__ ((unused)) unsigned int line_number)
+void _nop(stack_t **h, unsigned int line_number)
 {
-	sq_flag = 0;
-}
-
-/**
- * _queue - set sq_flag to queue
- * @stack: pointer to stack list
- * @line_number: line opcode occurs on
- */
-
-void _queue(__attribute__ ((unused))stack_t **stack,
-	    __attribute__ ((unused))unsigned int line_number)
-{
-	sq_flag = 1;
+	(void) h;
+	(void) line_number;
 }

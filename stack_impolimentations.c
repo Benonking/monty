@@ -1,111 +1,60 @@
 #include "monty.h"
 /**
- * _push - push int to a stack
- * @stack: linked lists for monty stack
- * @line_number: number of line opcode occurs on
+ * is_number - iterates each character of string to check of isdigit
+ * @n: integer
+ * Return: 0 if is number, else -1 if not
  */
-void _push(stack_t **stack, unsigned int line_number)
+int isnumber(const char *n)
 {
-	stack_t *new;
-	char *arg;
-	int push_arg;
+	int i = 0;
 
-	push_arg = 0;
-	new = malloc(sizeof(stack_t));
-	if (!new)
+	if (*n == '-')
+		i = 1;
+	for (; *(n + i) != '\0'; i++)
 	{
-		printf("Error: malloc failed\n");
-		error_exit(stack);
+		if (isdigit(*(n + i)) == 0)
+			return (-1);
 	}
-
-	arg = strtok(NULL, "\n ");
-	if (isnumber(arg) == 1 && arg != NULL)
+	return (0);
+}
+/**
+ * push - adds node to the start of dlinkedlist
+ * @h: head of linked list (node at the bottom of stack)
+ * @line_number: bytecode line number
+ * @n: integer
+ */
+void _push(stack_t **h, unsigned int line_number, const char *n)
+{
+	if (!h)
+		return;
+	if (isnumber(n) == -1)
 	{
-		push_arg = atoi(arg);
+		printf("L%u: usage: push integer\n", line_number);
+		free_stack(h);
+		exit(EXIT_FAILURE);
 	}
 	else
 	{
-		printf("L%d: usage: push integer\n", line_number);
-		error_exit(stack);
-	}
-
-	if (sq_flag == 1)
-	{
-		add_stacknode_end(stack, push_arg);
-	}
-
-	if (sq_flag == 0)
-	{
-		add_stacknode_beg(stack, push_arg);
-	}
-
-}
-/**
- * _pall - print all function
- * @stack: pointer to linked list stack
- * @line_number: number of line opcode occurs on
- */
-void _pall(stack_t **stack, __attribute__ ((unused))unsigned int line_number)
-{
-	stack_t *runner;
-
-	runner = *stack;
-	while (runner != NULL)
-	{
-		printf("%d\n", runner->n);
-		runner = runner->next;
+		if (add_stacknode_beg(h, atoi(n)) == -1)
+		{
+			free_stack(h);
+			exit(EXIT_FAILURE);
+		}
 	}
 }
 /**
- * _pint - print int at top of stack
- * @stack: pointer to linked list stack
- * @line_number: number of line opcode occurs on
- *
+ * _pop - removes node at front of dlinkedlist
+ * @h: head of linked list (node at the bottom of stack)
+ * @line_number: bytecode line number
  */
-void _pint(stack_t **stack, unsigned int line_number)
+void _pop(stack_t **h, unsigned int line_number)
 {
-	stack_t *runner;
-
-	runner = *stack;
-	if (runner == NULL)
+	if (h == NULL || *h == NULL)
 	{
-		printf("L%d: can't pint, stack empty\n", line_number);
-		error_exit(stack);
+		printf("L%u: can't pop an empty stack\n", line_number);
+		free_stack(h);
+		exit(EXIT_FAILURE);
 	}
-	printf("%d\n", runner->n);
-}
-/**
- * _swap - swap top of stack and second top of stack
- * @stack: pointer to linked list stack
- * @line_number: number of line opcode occurs on
- *
- */
-void _swap(stack_t **stack, unsigned int line_number)
-{
-	stack_t *runner;
-	int tmp;
-
-	runner = *stack;
-	if (runner == NULL || runner->next == NULL)
-	{
-		printf("L%d: can't swap, stack too short\n", line_number);
-		error_exit(stack);
-	}
-	tmp = runner->n;
-	runner->n = runner->next->n;
-	runner->next->n = tmp;
-}
-/**
- * _pop - delete item at top of stack
- * @stack: pointer to linked list stack
- * @line_number: number of line opcode occurs on
- */
-void _pop(stack_t **stack, unsigned int line_number)
-{
-	if (*stack == NULL)
-	{
-		printf("L%d: can't pop an empty stack\n", line_number);
-		error_exit(stack);
-	}
-	delete_stacknode_at_index(stack, 0);
+	else
+		delete_end_node(h);
 }

@@ -1,75 +1,29 @@
 #include "monty.h"
-/**
- * error_exit - frees the stack and exits due to erro
- * @stack: pointer to the head of the stack
- *
- */
-void error_exit(stack_t **stack)
-{
-	if (*stack)
-		free_stack(*stack);
-	exit(EXIT_FAILURE);
-}
 
 /**
- * isnumber - checks if a string is a number
- * @str: string being passed
- *
- * Return: returns 1 if string is a number, 0 otherwise
+ * rotl - rotate so top of stack becomes last one, second becomes first one
+ * @h: node to be rotated
+ * @line_number: node number
  */
-int isnumber(char *str)
+void _rotl(stack_t **h, unsigned int line_number)
 {
-	unsigned int i;
+	stack_t *tmp;
 
-	if (str == NULL)
-		return (0);
-	i = 0;
-	while (str[i])
+	(void) line_number;
+
+	if ((*h)->next != NULL)
 	{
-		if (str[0] == '-')
-		{
-			i++;
-			continue;
-		}
-		if (!isdigit(str[i]))
-			return (0);
-		i++;
-	}
-	return (1);
-}
-
-/**
- * _rotl - rotates the list left
- * @stack: pointer to the top of the stack
- * @line_number: the index of the current line
- *
- */
-void _rotl(stack_t **stack, __attribute__ ((unused))unsigned int line_number)
-{
-	stack_t *runner;
-	int temp1, temp2;
-
-	if (*stack == NULL)
-		return;
-	runner = *stack;
-	while (runner->next)
-		runner = runner->next;
-	while (runner)
-	{
-		if (!runner->next)
-		{
-			temp1 = runner->n;
-			runner->n = (*stack)->n;
-		}
-		else
-		{
-			temp2 = runner->n;
-			runner->n = temp1;
-			temp1 = temp2;
-		}
-		runner = runner->prev;
+		tmp = *h;
+		while (tmp->next != NULL)
+			tmp = tmp->next;
+		(*h)->prev = tmp;
+		tmp->next = *h;
+		(*h)->next->prev = NULL;
+		*h = (*h)->next;
+		tmp->next->next = NULL;
 	}
 }
+
 /**
  * _rotr - rotates the list right
  * @stack: pointer to the top of the stack
@@ -104,4 +58,34 @@ void _rotr(stack_t **stack, __attribute__ ((unused))unsigned int line_number)
 		runner2 = runner2->next;
 
 	}
+}
+/**
+ * swap - swap locations of previous stack with the top stack
+ * @h: node to be swapped
+ * @line_number: node number
+ */
+void _swap(stack_t **h, unsigned int line_number)
+{
+	stack_t *tmp = NULL;
+
+	if (*h == NULL || (*h)->next == NULL)
+	{
+		printf("L%u: can't swap, stack too short\n", line_number);
+		exit(EXIT_FAILURE);
+	}
+	tmp = (*h)->next;
+	if (tmp->next != NULL)
+	{
+		(*h)->next = tmp->next;
+		(*h)->next->prev = *h;
+
+	}
+	else
+	{
+		tmp->prev->prev = tmp;
+		tmp->prev->next = NULL;
+	}
+	tmp->prev = NULL;
+	tmp->next = *h;
+	(*h) = tmp;
 }
